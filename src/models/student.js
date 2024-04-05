@@ -5,7 +5,11 @@ const studentSchema = new Schema({
     type: String,
     require: true,
   },
-  institute: {
+  instituteName: {
+    type: String,
+    require: true,
+  },
+  instituteId: {
     type: Schema.Types.ObjectId,
     ref: "Institute",
     require: true,
