@@ -16,7 +16,6 @@ const getProjects = async () => {
 
 const Explore = async () => {
   const { projects } = await getProjects();
-  console.log(projects);
 
   return (
     <>
@@ -24,7 +23,6 @@ const Explore = async () => {
         <div className="flex flex-col justify-center items-center mt-16 gap-4">
           {projects.map((project) => {
             const { title, instituteName, domainName, _id: id } = project;
-            console.log(title, instituteName, domainName, id);
             return (
               <ProjectCard
                 title={title}
