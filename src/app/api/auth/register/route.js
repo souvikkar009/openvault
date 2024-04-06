@@ -15,7 +15,8 @@ export async function POST(request) {
       instituteId,
     } = reqBody;
     console.log(reqBody);
-    const hashedPasswrod = await bcrypt.hash(studentPassword, 10);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPasswrod = await bcrypt.hash(studentPassword, salt);
     console.log(hashedPasswrod);
 
     await Student.create({
