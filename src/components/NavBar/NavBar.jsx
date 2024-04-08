@@ -1,11 +1,60 @@
 "use client";
-import { Button, useDisclosure } from "@chakra-ui/react";
+import { useBoolean, useDisclosure, Button } from "@chakra-ui/react";
 import { FaServer } from "react-icons/fa";
 import SearchBar from "../SearchBar/SearchBar";
 import Link from "next/link";
+import AuthForm from "../AuthComponents/AuthForm";
+import { FaUserCircle } from "react-icons/fa";
+import ProfileBar from "../ProfileBar/ProfileBar";
+import { useEffect, useLayoutEffect, useState } from "react";
+import axios from "axios";
 
 const NavBar = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isSearchOpen,
+    onOpen: onSearchOpen,
+    onClose: onSearchClose,
+  } = useDisclosure();
+  const {
+    isOpen: isAuthOpen,
+    onOpen: onAuthOpen,
+    onClose: onAuthClose,
+  } = useDisclosure();
+  const {
+    isOpen: isProfileOpen,
+    onOpen: onProfileOpen,
+    onClose: onProfileClose,
+  } = useDisclosure();
+
+  const [loggedIn, setLoggedIn] = useBoolean();
+  const [studentName, setStudentName] = useState("");
+  const [instituteName, setInstituteName] = useState("");
+  useEffect(() => {
+    const checkLogInStatus = async () => {
+      const { isLoggedIn } = await axios
+        .get("http://localhost:3000/api/auth/me")
+        .then((res) => res.data)
+        .catch((error) => console.log(error));
+
+      isLoggedIn ? setLoggedIn.on() : setLoggedIn.off();
+    };
+    checkLogInStatus();
+  });
+
+  const studentInfo = async () => {
+    const { student } = await axios
+      .get("http://localhost:3000/api/auth/me")
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+
+    if (!student) {
+      alert("User no loggedin");
+    }
+
+    setStudentName(student.studentName);
+    setInstituteName(student.instituteName);
+    console.log(studentName, instituteName);
+  };
 
   return (
     <div className="sticky top-0 py-4">
@@ -20,25 +69,47 @@ const NavBar = () => {
         </Link>
 
         <div
-          className="m-0 w-[40%] h-12 absolute right-1/2 top-0 translate-x-1/2 bg-brand.5 cursor-pointer rounded-xl flex items-center justify-start"
-          onClick={() => onOpen()}
+          className="w-[40%] absolute right-1/2 top-0 translate-x-1/2 bg-brand.5 cursor-pointer rounded-xl flex items-center justify-start"
+          onClick={() => onSearchOpen()}
         >
-          <span className="ml-6 text-lg text-brand.4">Search Project</span>
+          <span className="ml-6 py-3 text-brand.4">Search Project</span>
         </div>
-        <div className="mr-6">
-          <Button
-            colorScheme="teal"
-            px={8}
-            py={6}
-            fontSize={"1.125em"}
-            fontWeight="normal"
+        {loggedIn ? (
+          <div
+            className="m-0 text-teal-500 text-4xl mr-6 cursor-pointer"
+            onClick={() => {
+              studentInfo();
+              onProfileOpen();
+            }}
           >
-            Register
-          </Button>
-        </div>
+            <FaUserCircle />
+          </div>
+        ) : (
+          <div className="mr-6">
+            <Button
+              colorScheme="teal"
+              py={6}
+              fontWeight="normal"
+              onClick={onAuthOpen}
+            >
+              Register | Login
+            </Button>
+          </div>
+        )}
       </div>
       <div>
-        <SearchBar isOpen={isOpen} onClose={onClose} />
+        <SearchBar isOpen={isSearchOpen} onClose={onSearchClose} />
+      </div>
+      <div>
+        <AuthForm isOpen={isAuthOpen} onClose={onAuthClose} />
+      </div>
+      <div>
+        <ProfileBar
+          isOpen={isProfileOpen}
+          onClose={onProfileClose}
+          studentName={studentName}
+          instituteName={instituteName}
+        />
       </div>
     </div>
   );

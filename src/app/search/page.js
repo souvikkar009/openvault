@@ -19,16 +19,13 @@ const getSearchResult = async (q, filter) => {
 
 const Search = async ({ searchParams }) => {
   const { q, filter } = searchParams;
-  console.log(q, filter);
-  const {projects} = await getSearchResult(q, filter);
-  console.log(projects);
+  const { projects } = await getSearchResult(q, filter);
 
   return (
     <>
       <div className="flex flex-col justify-center items-center mt-16 gap-4">
         {projects.map((project) => {
           const { title, instituteName, domainName, _id: id } = project;
-          console.log(title, instituteName, domainName, id);
           return (
             <ProjectCard
               title={title}

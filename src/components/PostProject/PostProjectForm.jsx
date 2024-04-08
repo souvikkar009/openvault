@@ -96,11 +96,8 @@ const PostProjectForm = ({ isOpen, onClose }) => {
               },
             }}
           >
-            <div
-              className="text-gray-50 flex items-center justify-end mr-4 mt-4 cursor-pointer text-3xl"
-              onClick={onClose}
-            >
-              <GoHome />
+            <div className="text-gray-50 flex items-center justify-end mr-4 mt-4 text-3xl">
+              <GoHome onClick={onClose} className="cursor-pointer" />
             </div>
             <form onSubmit={handleProjectSubmit} className="flex flex-col">
               <div className="text-teal-400 text-lg my-2">Institute Name</div>

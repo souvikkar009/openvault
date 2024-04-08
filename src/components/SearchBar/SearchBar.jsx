@@ -16,7 +16,6 @@ import { IoSearchSharp } from "react-icons/io5";
 export default function SearchBar({ isOpen, onClose }) {
   const [query, setQuery] = useState("");
   const [searchFilter, setSearchFilter] = useState("");
-  const searchParams = useSearchParams();
   const router = useRouter();
 
   const handleSearchQuery = (e) => {
@@ -52,6 +51,7 @@ export default function SearchBar({ isOpen, onClose }) {
               onSubmit={(e) => {
                 handleSearchQuery(e);
                 onClose();
+                setQuery("");
               }}
             >
               <div className="flex items-center">
@@ -84,9 +84,9 @@ export default function SearchBar({ isOpen, onClose }) {
                         Domain
                       </span>
                     </Radio>
-                    <Radio value="tech stack">
+                    <Radio value="key word">
                       <span className=" bg-brand.5 text-gray-300 py-1 px-2 rounded">
-                        Tech Stack
+                        Key Word
                       </span>
                     </Radio>
                     <Radio value="user">
