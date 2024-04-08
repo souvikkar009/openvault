@@ -20,7 +20,10 @@ export async function POST(request) {
     domainId,
     domainName,
   });
-  return NextResponse.json({ message: "ok" }, { status: 201 });
+  return NextResponse.json(
+    { message: "Project Created Successfully" },
+    { status: 201 }
+  );
 }
 
 export async function GET() {
