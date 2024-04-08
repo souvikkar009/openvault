@@ -122,6 +122,10 @@ const AuthForm = ({ onClose, isOpen }) => {
       setStudentPasswordInput("");
       alert(message);
       onClose();
+    } else {
+      setStudentEmailInput("");
+      setStudentPasswordInput("");
+      alert(message);
     }
   };
 
